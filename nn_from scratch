@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul  9 16:13:17 2021
+
+@author: jyoti
+"""
+#inputs and weights are stored in list
+inputs = [1.2, 5.1, 2.1] # this is a single neuron that has 3 inputs (hence its obvious its not the neuron of input layer. In input layer we have inputs, neurons comes into existence after the input layer)
+weights = [3.1, 2.1, 8.7] #generally weights are randomly selected and tweaked by backpropagation network
+bias = 3 #hence we have one bias as we have one neuron, but the neuron has 3 inputs hence 3 weights
+# so the picture is like  -
+#                         - O
+#                         -
+output = inputs[0]*weights[0] + inputs[1]*weights[1] + inputs[2]*weights[2] + bias
+print(output)
+
+#scenario: 3 neurons and 4 inputs
+inputs = [1,2,3,2.5] #input is same for each neuron
+weights1 = [0.2, 0.8,-0.5,1]
+weights2=[0.5, -0.91,0.26,-0.5]
+weights3= [-0.26, -0.27,0.17,0.87]
+
+bias1 = 2
+bias2 = 3
+bias3 = 0.5
+
+outputs = [inputs[0]*weights1[0] + inputs[1]*weights1[1] + inputs[2]*weights1[2] + inputs[3]*weights1[ 3] + bias1,
+           inputs[0]*weights2[0] + inputs[1]*weights2[1] + inputs[2]*weights2[2] + inputs[3]*weights2[ 3] + bias2,
+           inputs[0]*weights3[0] + inputs[1]*weights3[1] + inputs[2]*weights3[2] + inputs[3]*weights3[ 3] + bias3]
+
+print(outputs)
+#its not a traditional way to use lists for DL in python, we need to make code bit more dynamic
+
+inputs = [1,2,3,2.5]
+weights =[[0.2, 0.8,-0.5,1], 
+          [0.5, -0.91,0.26,-0.5], 
+          [-0.26, -0.27,0.17,0.87]]
+biases  = [2,3,0.5]
+
+layer_outputs = []
+a = zip(weights, biases)
+print(a)
+for neuron_weights, neuron_bias in zip(weights, biases):
+    neuron_output = 0
+    for n_input, weight in zip(inputs, neuron_weights):
+        neuron_output += n_input * weight
+    neuron_output += neuron_bias
+    layer_outputs.append(neuron_output)
+    
+print(layer_outputs)
+
+#shape: size of the list
+l = [1,5,6,3] # 1-d list shape =1(4,)
+
+#dot product with a neuron using numpy
+import numpy as np
+inputs = [1,2,3,2.5]
+weights =[[0.2, 0.8,-0.5,1], 
+          [0.5, -0.91,0.26,-0.5], 
+          [-0.26, -0.27,0.17,0.87]]
+biases  = [2,3,0.5]
+
+output = np.dot(weights,inputs) + biases # do not write np.dot(inputs, weigths) weights is a matrix now not just simple 1-d vector
+#we want the output to be identified by the indices of the weights and not inputs we have written weights as first
+print(biases)
+print(output.shape) 
+
+
+#In reality we do not give single input to the neurons but we give input in batches, in order to avoid generalisation.
+inputs = [[1,2,3,2.5],
+          [2,5,-1,2],
+          [-1.5,2.7,3.3,-0.8]]
+
+weights = [[0.2, 0.8, -0.5, 1],
+           [0.5,-0.91, 0.26, -0.5],
+           [-0.26, -0.27, 0.17, 0.87]]
+
+biases = [2,3,0.5]
+
+outputs = np.dot(inputs, np.array(weights).T) + biases
+print(outputs)
+
+#add another set of layer. TO add another we need to know number of neurons, set of biases, another set of weights.
+
+inputs = [[1,2,3,2.5],
+          [2,5,-1,2],
+          [-1.5,2.7,3.3,-0.8]]
+
+weights1 = [[0.2, 0.8, -0.5, 1],
+           [0.5,-0.91, 0.26, -0.5],
+           [-0.26, -0.27, 0.17, 0.87]]
+
+weights2 = [[0.1, -0.14, -0.5],
+           [0.5, 0.12, 0.33],
+           [-0.44, 0.73, -0.13]] # we can see we have 3 compononets in lol because in previous layer we have 3 neurons
+
+biases1 = [2,3,0.5]
+biases2  = [-1, 2, -0.5]
+
+layer1_outputs = np.dot(inputs, np.array(weights1).T) + biases1
+layer2_outputs = np.dot(layer1_outputs, np.array(weights2).T) + biases2
+
+print(layer2_outputs)
+
+#as this is very unruly if we want to change some values and as we increase layers it will become more undynamic.
+#Hence we need to create the object i.e. let us create  class
+
+#we remove everything, we will pnly keep inputs, in ML it is quiet standard that we represent the input dataset as X
+
+X = [[1,2,3,2.5],
+          [2,5,-1,2],
+          [-1.5,2.7,3.3,-0.8]]
+
+#now lets make hidden layers, because as a programmer, we do not know how it is going to work nn_from scrtach_object.py
+
+
+
+
+ 

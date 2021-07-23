@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jul 14 09:13:50 2021
+
+@author: jyoti
+"""
+import numpy as np
+np.random.seed(0)
+
+def create_data(points, classes): # points is the feature set, number of classification
+    X = np.zeros((points *classes, 2)) # 2 dimension array thats why double brackets, number 2 is because of 2 feautres we are considering
+    y = np.zeros(points*classes)
+    for class_number in range(classes):
+        ix = range(points*class_number, points*(class_number+1))
+        r = np.linspace(0.0, 1, points)
+        t = np.linspace(class_number*4, (class_number+1)*4, points) +np.random.randn(points)*0.2
+        X[ix] = np.c_[r * np.sin(t*2.5), r*np.cos(t*2.5)]
+        y[ix] = class_number
+    return X,y
+
+import matplotlib.pyplot as plt
+
+print("here")
+X, y = create_data(100,4) # 100 feature set i.e. number of rows and there are 4 readings in each feature set i.e. columns and now we are considering only 2 features
+# 4 columns 100 rows but we are cinsidering only 2 columns and 100 rows´
+#as while creating X we have given dimensions 2, hence only 2 features can be selected.
+plt.scatter(X[:,0], X[:,1], c =y, cmap ='brg')
+plt.show()
+
+#activateion functions
+
+import math
+layer_outputs = [4.8, 1.21, 2.385]
+E =math.e
+
+exp_values = []
+for output in layer_outputs:
+    exp_values.append(E**output)
+
+#or 
+exp_values = np.exp(layer_outputs)
+
+print(exp_values)
+
+#code normalisation :: normalisation happens after exponentiation
+norm_base = sum(exp_values)
+norm_values = []
+
+for value in exp_values:
+    norm_values.append(value / norm_base)
+
+#or
+norm_values = exp_values / np.sum(exp_values)
+    
+print(norm_values)
+print(sum(norm_values))
+
+
+#2 dimension layer outputs
+layer_outputs = [[4.8, 1.21, 2.385],
+                 [8.9, -1.81, 0.2],
+                 [1.4, 1.051, 0.026]]
+
+exp_values = np.exp(layer_outputs)
+#norm_values = exp_values / np.sum(exp_values)
+#print(norm_values)
+#print(sum(norm_values))
+#we dont have to do the above three steps as numpy works on each value hence exponentiationg each value
+
+# we will do some of each row
+print(np.sum(layer_outputs, axis = 1, keepdims = True))
+
+norm_values = exp_values / np.sum(exp_values, axis =1, keepdims = True) 
+#as input grows, exponentiation value also grows, it does not get take long to convert into massive  and hence reach an overflow
+#one way to overcome the overflow is to take all the values of output prior exponentiation and subtract the maximum of it from each number
